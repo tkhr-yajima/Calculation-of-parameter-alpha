@@ -1,0 +1,121 @@
+(* ::Package:: *)
+
+(* ::Input:: *)
+(*Clear["Global`*"]*)
+
+
+(* ::Input:: *)
+(*(*n:iteration,x0:initial state,c:step parameter,mu:mean of target distribution,sigma:standard deviation of target distribution*)*)
+(*n=50000;x0=5;c=0.5;mu=0;sigma=1;*)
+
+
+(* ::Input:: *)
+(*(*log-likelihood function*)*)
+(*S=(x-mu)^2/(2*sigma^2);*)
+
+
+(* ::Input:: *)
+(*(*listx: list for storing the calculated state,*)
+(*listr: list for storing the classification of state; r=1:Deterministic Accept, r=-1:Probabilistic Accept, r=0: Probabilistic Reject,*)
+(*listDeltax: list for storing the random variable of proposal*)*)
+(*listx={x0};listr={};listDeltax={};*)
+
+
+(* ::Input:: *)
+(*(*Metropolis algorithm*)*)
+(*Do[*)
+(*(*generating random variable for proposal*)*)
+(*Deltax=RandomReal[{-c,c}];*)
+(*AppendTo[listDeltax,Deltax];*)
+(**)
+(*(*proposal of state*)*)
+(*X=listx[[i]]+Deltax;*)
+(**)
+(*(*S1:current log-likelihood function,S2:proposal log-likelihood function*)*)
+(*S1=S/.x->listx[[i]];*)
+(*S2=S/.x->X;*)
+(*dS=Exp[S1-S2];*)
+(**)
+(*(*generating uniform random variable [0,1]*)*)
+(*r=RandomReal[];*)
+(**)
+(*(*Metoropolis test*)*)
+(*If[dS>1,AppendTo[listx,X]];*)
+(*If[r<dS<1,AppendTo[listx,X]];*)
+(*If[dS<r,AppendTo[listx,listx[[i]]]];*)
+(**)
+(*If[dS>1,AppendTo[listr,{i,1}]];*)
+(*If[r<dS<1,AppendTo[listr,{i,-1}]];*)
+(*If[dS<r,AppendTo[listr,{i,0}]]*)
+(*,*)
+(*{i,1,n}];*)
+
+
+(* ::Input:: *)
+(*listx=SetPrecision[listx,30];*)
+
+
+(* ::Input:: *)
+(*(*listMean:for storing the mean value,listVar: for storing the variance*)*)
+(*listMean={listx[[1]]};*)
+(*Do[meanx=(1/(i+1))*(listx[[i+1]]+i*listMean[[i]]);*)
+(*AppendTo[listMean,meanx],{i,1,n-1}];*)
+(*listVar={0};*)
+(*Do[varx=(i/(i+1))*listVar[[i]]+i*(listMean[[i+1]]-listMean[[i]])^2;*)
+(*AppendTo[listVar,varx],{i,1,n-1}];*)
+
+
+(* ::Input:: *)
+(*(*calcuration of geometric parameter alphak using Equation (35)*)*)
+(*(*M1,M2,M3,M:Equations (36)-(39),N1,N2,N3,N:Equations (40)-(43)*)*)
+(*M1=(k+1)*(muk1-muk)*wk1;*)
+(*M2=(muk1-muk)^2*((k+2)*wk+2*k*(k+1)*wk1)-(k+2)*(wk1-wk)*wk1;*)
+(*M3=k*(muk1-muk)^3*((k+2)*wk-2*(k+1)*wk1);*)
+(*N1=-(k+1)*(muk1-muk)*(wk1-wk);*)
+(*N2=(muk1-muk)^2*((2*k^2+3*k+2)*wk-2*k*(k+1)*wk1)+(k+2)*(wk1-wk)^2;*)
+(*N3=k*(muk1-muk)^3*(2*(k+1)*wk1-k*wk);*)
+(**)
+(*(*alphakM:Numerator of Equation (35),alphakN:Denominator of Equation (35)*)*)
+(*alphakM=M1*Deltaxk2^2+M2*Deltaxk2+M3;*)
+(*alphakN=N1*Deltaxk2^2+N2*Deltaxk2+N3;*)
+(*alphak=alphakM/alphakN;*)
+
+
+(* ::Input:: *)
+(*(*If the proposal is rejected,calculate $\alpha_k$ in equation (35) by setting the random variable $\Delta x$ to zero.*)
+(*If the proposal is accepted,calculate $\alpha_k$ in equation (35) using the random variable $\Delta x$.*)
+(*listAlphak: list for storing calculated values of $\alphak$*)*)
+(*listAlphak={};*)
+(*Do[*)
+(*If[listr[[i+1]][[2]]==0,*)
+(*AppendTo[listAlphak,alphak/.{k->i,Deltaxk2->0,muk1->listMean[[i+1]],muk->listMean[[i]],wk1->listVar[[i+1]],wk->listVar[[i]]}],*)
+(*AppendTo[listAlphak,alphak/.{k->i,Deltaxk2->listDeltax[[i+1]],muk1->listMean[[i+1]],muk->listMean[[i]],wk1->listVar[[i+1]],wk->listVar[[i]]}]],{i,1,n-1}];*)
+
+
+(* ::Input:: *)
+(*(**)*)
+(*listAlphak2=Table[{i,listAlphak[[i]]},{i,1,n-2}];*)
+(*Do[*)
+(*If[listAlphak2[[i]][[2]]==-1,listAlphak3=ReplacePart[listAlphak2,i->{i,""}],Break[]],{i,1,10}];*)
+(*(*Table[*)
+(*If[listalphak[[i]][[2]]\[Equal]-1,listalphak5=ReplacePart[listalphak,i\[Rule]{i,""}]],{i,1,10}];*)*)
+
+
+(* ::Input:: *)
+(*(*Using `listr`\[LongDash]which stores the types of state transitions\[LongDash]classify the calculated $\alpha_k$ into one of the following categories:"Deterministic Acceptance," "Probabilistic Acceptance," or "Probabilistic Rejection"*)*)
+(*listAlphaUp={};*)
+(*Do[If[listr[[i+1]][[2]]==1,AppendTo[listAlphaUp,listAlphak3[[i]]]],{i,1,Length[listAlphak3]}];*)
+(*listAlphaDwn={};*)
+(*Do[If[listr[[i+1]][[2]]==-1,AppendTo[listAlphaDwn,listAlphak3[[i]]]],{i,1,Length[listAlphak3]}];*)
+(*listAlphaSty={};*)
+(*Do[If[listr[[i+1]][[2]]==0,AppendTo[listAlphaSty,listAlphak3[[i]]]],{i,1,Length[listAlphak3]}];*)
+
+
+(* ::Input:: *)
+(*Export["listx_Numerical_example_case_D.csv",listx];*)
+(*Export["listMean_Numerical_example_case_D.csv",listMean];*)
+(*Export["listVar_Numerical_example_case_D.csv",listVar];*)
+(*Export["listr_Numerical_example_case_D.csv",listr];*)
+(*Export["listDeltax_Numerical_example_case_D.csv",listDeltax];*)
+(*Export["listAlphak_Numerical_example_case_D.csv",listAlphak];*)
+(*Export["listAlphak3_Numerical_example_case_D.csv",listAlphak3];*)
