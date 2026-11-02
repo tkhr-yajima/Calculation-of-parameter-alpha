@@ -1,0 +1,106 @@
+# Calculating parameter $alpha_{k}$ in "Geometric structure of the Metropolis process in MCMC sampling for a normal distribution by the flatness of the $\alpha$-connection"
+
+## Overview
+This repository contains the Mathematica code for the paper: "Geometric structure of the Metropolis process in MCMC sampling for a normal distribution by the flatness of the $\alpha$-connection".
+
+## Requirements
+- Mathematica / Wolfram Language (Version 10.0)
+- Windows 11
+
+## Directory Structure
+This repository is organized by calculation conditions. Each folder contains a main package and a subsequent script that should be executed afterward.
+
+```text
+.
+├── Folder "Section 6.1"/                    # Calculation for Cases (A), (B) and (C) in Section 6.1
+│   ├── Folder "Case A"/             # Folder for Calculation Condition (A)
+│   │   ├── KY_calculation_alpha_case_A.wl    # 1st: Main calculation package for $\alpha_{k}$
+│   │   └── KY_calculation_alpha_case_A_for_generating_Figures.wl    # 2nd: Subsequent generating figures script
+│   ├── Folder "Case B"/             # Folder for Calculation Condition (B)
+│   │   ├── KY_calculation_alpha_case_B.wl       # 1st: Main calculation package for $\alpha_{k}$
+│   │   └── KY_calculation_alpha_case_B_for_generating_Figures.wl # 2nd: Subsequent generating figures script
+│   ├── Folder "Case C"/             # Folder for Calculation Condition (C)
+│   │     ├── KY_calculation_alpha_case_C.wl       # 1st: Main calculation package for $\alpha_{k}$
+│   │     └── KY_calculation_alpha_case_C_for_generating_Figures.wl # 2nd: Subsequent generating figures script
+│   └── Section6_outlier.wl      # Calculation for outlier $\alpha_{k}$ in Section 6.1.1
+├── Folder "Section 6.2"/                    # Calculation for Cases (D) and (E) in Section 6.2
+│   ├── Folder "Case D"/             # Folder for Calculation Condition (D)
+│   │   ├── KY_calculation_alpha_case_D.wl       # 1st: Main calculation package for $\alpha_{k}$
+│   │   └── KY_calculation_alpha_case_D_for_generating_Figures.wl # 2nd: Subsequent generating figures script
+│   └── condition4/             # Folder for Calculation Condition (E)
+│       ├── KY_calculation_alpha_case_E.wl       # 1st: Main calculation package for $\alpha_{k}$
+│       └── KY_calculation_alpha_case_E_for_generating_Figures.wl # 2nd: Subsequent generating figures script
+├── Folder "Section 6.3"/                    # Calculation for $\alpha_{k}$ in Section 6.3
+├── KY_calculation_alpha_case_A_replicated_simulation.wl        # Determine the classification accuracy, acceptance rate, and empirical distribution for $\alpha_{k}$
+└── README.md
+```
+
+## Usage
+To run the simulations, set your working directory to the specific condition folder first, and then load the files in order.
+
+### General Execution Rule (Common to all conditions)
+For any condition you choose, open a notebook (`.nb`) or run the following command in Mathematica to move into that directory. This allows you to load the files using just their file names:
+
+```wolfram
+(* Example: If you want to run "Section 6.1" / "Case A" *)
+SetDirectory["/path/to/repository/Section 6.1/Case A"]
+```
+
+### Folder "Section 6.1":
+
+#### Run Numerical condition (A)
+```wolfram
+SetDirectory["/path/to/repository/Section 6.1/Case A"]
+Get["KY_calculation_alpha_case_A.wl"]       (* 1. Load Main Package *)
+Get["KY_calculation_alpha_case_A_for_generating_Figures.wl"]  # (* 2. Run Subsequent Script *)
+```
+
+#### Run Calculation for outlier $\alpha_{k}$ in Section 6.1.1 under numerical condition (A)
+```wolfram
+SetDirectory["/path/to/repository/Section 6.1"]
+Get["Section6_outlier.wl"]       (* Load Main Package *)
+```
+
+#### Run Numerical condition (B)
+```wolfram
+SetDirectory["/path/to/repository/Section 6.1/Case B"]
+Get["KY_calculation_alpha_case_B.wl"]       (* 1. Load Main Package *)
+Get["KY_calculation_alpha_case_B_for_generating_Figures.wl"] # (* 2. Run Subsequent Script *)
+```
+
+#### Run Numerical condition (C)
+```wolfram
+SetDirectory["/path/to/repository/Section 6.1/Case C"]
+Get["KY_calculation_alpha_case_C.wl"]       (* 1. Load Main Package *)
+Get["KY_calculation_alpha_case_C_for_generating_Figures.wl"] # (* 2. Run Subsequent Script *)
+```
+---
+
+### Folder "Section 6.2":
+
+#### Run Numerical condition (D)
+```wolfram
+SetDirectory["/path/to/repository/Section 6.2/Case D"]
+Get["KY_calculation_alpha_case_D.wl"]       (* 1. Load Main Package *)
+Get["KY_calculation_alpha_case_D_for_generating_Figures.wl"]  # (* 2. Run Subsequent Script *)
+```
+
+#### Run Numerical condition (E)
+```wolfram
+SetDirectory["/path/to/repository/Section 6.2/Case E"]
+Get["KY_calculation_alpha_case_E.wl"]       (* 1. Load Main Package *)
+Get["KY_calculation_alpha_case_E_for_generating_Figures.wl"]  # (* 2. Run Subsequent Script *)
+```
+
+---
+
+### Folder "Section 6.3": Determine the classification accuracy, acceptance rate, and empirical distribution for $\alpha_{k}$
+
+#### Run 
+```wolfram
+SetDirectory["/path/to/repository/Section 6.3"]
+Get["KY_calculation_alpha_case_A_replicated_simulation.wl"]       (* Load Main Package *)
+```
+
+## License
+This project is licensed under the MIT License (LICENSE).
