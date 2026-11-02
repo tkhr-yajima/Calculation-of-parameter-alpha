@@ -1,0 +1,25 @@
+# === macOS System Files ===
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# === Windows System Files ===
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Editors & Backup Files ===
+*~
+*.bak
+*.swp
+*.tmp
+
+# === Wolfram / Mathematica Specific ===
+.wolfram/
+.wolfram-kernel/
+# ノートブックの自動保存バックアップフォルダ
+.Notebooks/
+
+# === Jupyter / Python Integration (If converting notebooks) ===
+*.nbconvert.ipynb
+.ipynb_checkpoints/
